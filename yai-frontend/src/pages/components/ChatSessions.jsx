@@ -42,7 +42,7 @@ const ChatSessions = () => {
     },
   ]);
   return (
-    <div className="w-[300px] border-r p-4 overflow-y-auto">
+    <div className="min-w-[300px] border-r p-4 overflow-y-auto">
       <div className="flex items-center mb-4">
         <MessageSquare className="h-4 w-4 mr-2" />
         <h2 className="font-medium">Chat History</h2>
