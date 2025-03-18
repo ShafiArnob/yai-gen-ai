@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -17,14 +17,14 @@ import {
   Star,
   Trash,
   Trash2,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
   Sidebar,
   SidebarContent,
@@ -33,7 +33,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { ModeToggle } from "./mode-toggle";
+import { useTheme } from "./theme-provider";
 
 const data = [
   [
@@ -96,33 +98,43 @@ const data = [
       icon: ArrowDown,
     },
   ],
-]
+];
 
 export function NavActions() {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
+  const { setTheme } = useTheme();
 
   React.useEffect(() => {
-    setIsOpen(true)
-  }, [])
+    setIsOpen(true);
+  }, []);
 
   return (
-    (<div className="flex items-center gap-2 text-sm">
+    <div className="flex items-center gap-2 text-sm">
+      {/* <ModeToggle /> */}
+      <Button onClick={() => setTheme("light")}>Light</Button>
+      <Button onClick={() => setTheme("dark")}>Dark</Button>
+
       <div className="text-muted-foreground hidden font-medium md:inline-block">
         Edit Oct 08
       </div>
       <Button variant="ghost" size="icon" className="h-7 w-7">
         <Star />
       </Button>
+
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="ghost"
             size="icon"
-            className="data-[state=open]:bg-accent h-7 w-7">
+            className="data-[state=open]:bg-accent h-7 w-7"
+          >
             <MoreHorizontal />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-56 overflow-hidden rounded-lg p-0" align="end">
+        <PopoverContent
+          className="w-56 overflow-hidden rounded-lg p-0"
+          align="end"
+        >
           <Sidebar collapsible="none" className="bg-transparent">
             <SidebarContent>
               {data.map((group, index) => (
@@ -144,6 +156,6 @@ export function NavActions() {
           </Sidebar>
         </PopoverContent>
       </Popover>
-    </div>)
+    </div>
   );
 }
