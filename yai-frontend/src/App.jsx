@@ -1,7 +1,5 @@
-// src/App.js
 import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-import "./App.css";
 
 // Initialize socket connection
 const socket = io("http://localhost:8000");
@@ -99,37 +97,51 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <h1>Azure OpenAI Chatbot</h1>
+    <div className="max-w-4xl mx-auto p-4 h-screen flex flex-col">
+      <header className="flex justify-between items-center py-4 mb-4 border-b border-gray-200">
+        <h1 className="text-2xl font-semibold text-gray-800">
+          Azure OpenAI Chatbot
+        </h1>
         <div
-          className={`connection-status ${
-            connected ? "connected" : "disconnected"
+          className={`px-4 py-2 rounded-full text-sm font-bold ${
+            connected
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
           }`}
         >
           {connected ? "Connected" : "Disconnected"}
         </div>
       </header>
 
-      <div className="chat-container">
-        <div className="messages-container">
+      <div className="flex-1 flex flex-col bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="flex-1 overflow-y-auto p-4">
           {messages.length === 0 ? (
-            <div className="welcome-message">
-              <h2>Welcome to the Azure OpenAI Chatbot</h2>
+            <div className="text-center mt-16 text-gray-500">
+              <h2 className="text-xl font-semibold mb-4">
+                Welcome to the Azure OpenAI Chatbot
+              </h2>
               <p>Send a message to start chatting with the AI!</p>
             </div>
           ) : (
             messages.map((msg, index) => (
               <div
                 key={index}
-                className={`message ${
-                  msg.isUser ? "user-message" : "ai-message"
-                } ${msg.error ? "error-message" : ""}`}
+                className={`flex flex-col mb-6 ${
+                  msg.isUser ? "items-end" : "items-start"
+                }`}
               >
-                <div className="message-bubble">
-                  <div className="message-content">{msg.content}</div>
+                <div
+                  className={`max-w-4/5 p-4 rounded-2xl break-words ${
+                    msg.isUser
+                      ? "bg-blue-500 text-white rounded-br-sm"
+                      : msg.error
+                      ? "bg-red-100 text-red-800 rounded-bl-sm"
+                      : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                  }`}
+                >
+                  <div className="leading-relaxed">{msg.content}</div>
                 </div>
-                <div className="message-sender">
+                <div className="text-xs mt-1 text-gray-500">
                   {msg.isUser ? "You" : "AI"}
                 </div>
               </div>
@@ -137,31 +149,36 @@ function App() {
           )}
 
           {isTyping && (
-            <div className="message ai-message">
-              <div className="message-bubble">
-                <div className="message-content">
-                  <div className="typing-indicator">
-                    {currentResponse || <span className="typing-dots"></span>}
-                  </div>
+            <div className="flex flex-col mb-6 items-start">
+              <div className="max-w-4/5 p-4 rounded-2xl rounded-bl-sm bg-gray-100 text-gray-800 break-words">
+                <div className="min-h-6">
+                  {currentResponse || (
+                    <span className="inline-block relative after:content-['...'] after:animate-pulse"></span>
+                  )}
                 </div>
               </div>
-              <div className="message-sender">AI</div>
+              <div className="text-xs mt-1 text-gray-500">AI</div>
             </div>
           )}
           <div ref={messagesEndRef} />
         </div>
 
-        <form onSubmit={handleSubmit} className="input-form">
+        <form
+          onSubmit={handleSubmit}
+          className="flex p-4 border-t border-gray-200"
+        >
           <input
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             placeholder="Type your message here..."
             disabled={!connected || isTyping}
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-full text-base focus:outline-none focus:border-blue-500 disabled:opacity-60 disabled:cursor-not-allowed"
           />
           <button
             type="submit"
             disabled={!connected || isTyping || !inputMessage.trim()}
+            className="ml-2 px-6 py-3 bg-blue-500 text-white border-none rounded-full text-base cursor-pointer transition-colors hover:bg-blue-600 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             Send
           </button>
