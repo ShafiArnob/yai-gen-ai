@@ -18,8 +18,8 @@ export default function ChatInterface() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2">
+      <SidebarInset className="flex flex-col h-screen overflow-hidden">
+        <header className="flex h-14 shrink-0 items-center gap-2 sticky top-0 z-10 bg-background">
           <div className="flex flex-1 items-center gap-2 px-3">
             <SidebarTrigger />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -38,7 +38,7 @@ export default function ChatInterface() {
           </div>
         </header>
         <Separator />
-        <div className="flex flex-1 flex-col gap-4">
+        <div className="flex flex-1 overflow-hidden">
           <Chat />
         </div>
       </SidebarInset>

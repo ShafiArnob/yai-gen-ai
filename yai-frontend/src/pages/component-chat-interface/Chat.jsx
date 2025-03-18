@@ -24,19 +24,43 @@ export default function Chat() {
   }, []);
 
   return (
-    <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel>
-        One
-        <Button onClick={() => setIsPanelTwoOpen((prev) => !prev)}>
-          {isPanelTwoOpen ? "Close" : "Open"}
-        </Button>
+    <ResizablePanelGroup direction="horizontal" className="h-full">
+      <ResizablePanel className="flex flex-col">
+        <div className="p-4">
+          One
+          <Button onClick={() => setIsPanelTwoOpen((prev) => !prev)}>
+            {isPanelTwoOpen ? "Close" : "Open"}
+          </Button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-4" id="panel-1">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <div
+              key={index}
+              className="aspect-video h-12 w-full rounded-lg bg-muted/50 mb-4"
+            />
+          ))}
+        </div>
       </ResizablePanel>
       {isPanelTwoOpen && (
         <>
           <ResizableHandle withHandle />
-          <ResizablePanel ref={panelTwoRef} maxSize={40} minSize={30}>
-            <button onClick={() => setIsPanelTwoOpen(false)}>Close</button>
-            Two
+          <ResizablePanel
+            ref={panelTwoRef}
+            maxSize={40}
+            minSize={30}
+            className="flex flex-col"
+          >
+            <div className="p-4">
+              <button onClick={() => setIsPanelTwoOpen(false)}>Close</button>
+            </div>
+            <div id="panel-2" className="flex-1 overflow-y-auto p-4">
+              {Array.from({ length: 24 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="aspect-video h-12 w-full rounded-lg bg-muted/50 mb-4"
+                />
+              ))}
+            </div>
           </ResizablePanel>
         </>
       )}
